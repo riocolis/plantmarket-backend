@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\API\MidtransController;
 use App\Http\Controllers\API\PlantController;
 use App\Http\Controllers\API\TransactionController;
