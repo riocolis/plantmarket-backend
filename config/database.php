@@ -65,6 +65,7 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
             'host' => $DATABSE_URL["host"],
             'port' => $DATABSE_URL["port"],
             'database' => ltrim($DATABSE_URL["path "],"/"),
