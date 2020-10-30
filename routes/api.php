@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\MidtransController;
 use App\Http\Controllers\API\TransactionController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/photo', [UserController::class, 'updatePhoto']);
     Route::post('logout', [UserController::class, 'logout']);
 
+    Route::post('checkout', [TransactionController::class], 'checkout');
+
     Route::get('transaction', [TransactionController::class], 'all');
     Route::post('transaction/{id}', [TransactionController::class], 'update');
 });
@@ -29,4 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
-Route::get('food', [FoodController::class], 'all');
+Route::get('plant', [PlantController::class], 'all');
+
+Route::post('midtrans/callback', [MidtransController::class, 'callback']);
