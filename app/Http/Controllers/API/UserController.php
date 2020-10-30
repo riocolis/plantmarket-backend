@@ -81,11 +81,11 @@ class UserController extends Controller
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
                 'user' => $user
-            ],'User Registered');
+            ], 'User Registered');
         } catch (Exception $error) {
             return ResponseFormatter::error([
                 'message' => 'Something went wrong',
-                'error' => $error
+                'error' => $error,
             ], 'Authentication Failed', 500);
         }
     }
@@ -122,15 +122,15 @@ class UserController extends Controller
             return ResponseFormatter::error(['error' => $validator->errors(), 'Update Image Failed', 401]);
         }
 
-        if($request->file('file')){
-            $file = $request->file->store('assets/user','public');
+        if ($request->file('file')) {
+            $file = $request->file->store('assets/user', 'public');
 
             //Save Url Image
             $user = Auth::user();
             $user->profile_photo_path = $file;
             $user->update();
 
-            return ResponseFormatter::success([$file],'File Successfully Update');
+            return ResponseFormatter::success([$file], 'File Successfully Update');
         }
     }
 }
