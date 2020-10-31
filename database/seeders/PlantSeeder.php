@@ -17,13 +17,13 @@ class PlantSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \Bezhanov\Faker\Provider\Species($faker));
-        foreach(range(0,4) as $i){
+        foreach(range(0,6) as $i){
             DB::table('plants')->insert([
                 'name' => $faker->plant,
                 'description' => $faker->sentence(20,true),
                 'price' => $faker->randomNumber(6),
                 'rate' => $faker->randomFloat(NULL,0,5),
-                'types' => 'recommended',
+                'types' => 'popular',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
