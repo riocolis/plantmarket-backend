@@ -17,7 +17,7 @@ class TransactionController extends Controller
         $transaction = Transaction::with(['plant,user'])->paginate(10);
 
         return view('transactions.index', [
-            'transactions' => $transaction
+            'transaction' => $transaction
         ]);
     }
 
@@ -50,7 +50,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return view('transaction.detail', [
+        return view('transactions.detail', [
             'item' => $transaction
         ]);
     }
