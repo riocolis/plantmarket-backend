@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::paginate(10);
+        $transaction = Transaction::with(['plant,user'])->paginate(10);
 
-        return view('users.index', [
-            'user' => $user
+        return view('transactions.index', [
+            'transactions' => $transaction
         ]);
     }
 
@@ -29,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        //
     }
 
     /**
@@ -38,15 +37,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-
-        $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
-
-        User::create($data);
-
-        return redirect()->route('users.index');
+        //
     }
 
     /**
@@ -55,8 +48,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
     {
+        return view('transaction.detail', [
+            'item' => $transaction
+        ]);
     }
 
     /**
@@ -65,11 +61,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        return view('users.edit', [
-            'item' => $user
-        ]);
+        //
     }
 
     /**
@@ -79,17 +73,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-        $data = $request->all();
-
-        if ($request->file('profile_photo_path')) {
-            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
-        }
-
-        $user->update($data);
-        
-        return redirect()->route('users.index');
+        //
     }
 
     /**
@@ -98,10 +84,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Transaction $transaction)
     {
-        $user->delete();
+        $transaction->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('transaction.index');
+    }
+
+    public function changeStatus(Request $request, $id, $status)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        $transaction->status = $status;
+        $transaction->save();
+
+        return redirect()->route('transaction.show', $id);
     }
 }

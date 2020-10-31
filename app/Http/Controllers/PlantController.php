@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
+use App\Http\Requests\PlantRequest;
+use App\Models\Plant;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class PlantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::paginate(10);
+        $plant = Plant::paginate(10);
 
-        return view('users.index', [
-            'user' => $user
+        return view('plant.index', [
+            'plant' => $plant
         ]);
     }
 
@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('plant.create');
     }
 
     /**
@@ -38,15 +38,15 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(PlantRequest $request)
     {
         $data = $request->all();
 
-        $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+        $data['picturePath'] = $request->file('picturePath')->store('assets/plant', 'public');
 
-        User::create($data);
+        Plant::create($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('plant.index');
     }
 
     /**
@@ -55,8 +55,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
+        //
     }
 
     /**
@@ -65,10 +66,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Plant $plant)
     {
-        return view('users.edit', [
-            'item' => $user
+        return view('plant.edit', [
+            'item' => $plant,
         ]);
     }
 
@@ -79,17 +80,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(PlantRequest $request, Plant $plant)
     {
         $data = $request->all();
 
-        if ($request->file('profile_photo_path')) {
-            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+        if ($request->file('picturePath')) {
+            $data['picturePath'] = $request->file('picturePath')->store('assets/plant', 'public');
         }
 
-        $user->update($data);
+        $plant->update($data);
         
-        return redirect()->route('users.index');
+        return redirect()->route('plant.index');
     }
 
     /**
@@ -98,10 +99,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Plant $plant)
     {
-        $user->delete();
+        $plant->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('plant.index');
     }
 }
