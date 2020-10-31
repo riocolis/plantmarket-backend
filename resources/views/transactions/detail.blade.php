@@ -1,59 +1,88 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Transaction') }}
+            Transaction &raquo; {{ $item->plant->name }} by {{ $item->user->name }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white">
-                <table class="table-auto w-full">
-                    <thead>
-                        <tr>
-                            <th class="border px-6 py-4">ID</th>
-                            <th class="border px-6 py-4">Plant</th>
-                            <th class="border px-6 py-4">User</th>
-                            <th class="border px-6 py-4">Quantity</th>
-                            <th class="border px-6 py-4">Total</th>
-                            <th class="border px-6 py-4">Status</th>
-                            <th class="border px-6 py-4">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($transactions as $item)
-                        <tr>
-                            <td class="border px-6 py-4">{{ $item->id }}</td>
-                            <td class="border px-6 py-4">{{ $item->plant->name }}</td>
-                            <td class="border px-6 py-4">{{ $item->user->name }}</td>
-                            <td class="border px-6 py-4">{{ $item->quantity }}</td>
-                            <td class="border px-6 py-4">{{ number_format($item->total) }}</td>
-                            <td class="border px-6 py-4">{{ $item->status }}</td>
-                            <td class="border px-6 py-4 text-center">
-                                <a href="{{route('transactions.show',$item->id)}}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded">
-                                    View
+           <div class="w-full rounded overflow-hidden shadow-lg px-6 py-6 bg-white">
+               <div class="flex fex-wrap mx-4 mb-4 md:mb-0">
+                    <div class="w-full md:w-1/6 px-4 mb-4 md:mb-0">
+                        <img src="{{ $item->plant->picturePath }}" alt="" class="w-full rounded">
+                    </div>
+                    <div class="w-full md:w-5/6 px-4 mb-4 md:mb-@">
+                        <div class="flex flex-wrap mb-3">
+                            <div class="w-2/6">
+                                <div class="text-sm">Product Name</div>
+                                <div class="text-xl font-bold">{{ $item->plant->name }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">Quantity</div>
+                                <div class="text-xl font-bold">{{ number_format($item->quantity) }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">Total</div>
+                                <div class="text-xl font-bold">{{ number_format($item->total) }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">Status</div>
+                                <div class="text-xl font-bold">{{ $item->total }}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap mb-3">
+                            <div class="w-2/6">
+                                <div class="text-sm">User Name</div>
+                                <div class="text-xl font-bold">{{ $item->user->name }}</div>
+                            </div>
+                            <div class="w-3/6">
+                                <div class="text-sm">Email</div>
+                                <div class="text-xl font-bold">{{ $item->user->email }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">City</div>
+                                <div class="text-xl font-bold">{{ $item->user->city }}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap mb-3">
+                            <div class="w-4/6">
+                                <div class="text-sm">Address</div>
+                                <div class="text-xl font-bold">{{ $item->user->address }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">House Number</div>
+                                <div class="text-xl font-bold">{{ $item->user->houseNumber }}</div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm">Phone</div>
+                                <div class="text-xl font-bold">{{ $item->user->phone }}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap mb-3">
+                            <div class="w-5/6">
+                                <div class="text-sm">Payment URL</div>
+                                <div class="text-lg font-bold"><a href="{{ $item->payment_url }}">{{ $item->payment_url }}</a></div>
+                            </div>
+                            <div class="w-1/6">
+                                <div class="text-sm mb-1">ChangeStatus</div>
+                                <a href="{{ route('transactions.changeStatus'. ['id' => $item->id, 'status' => 'ON_DELIVERY']) }}"
+                                    class="b-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded block text-center w-full mb-1">
+                                    ON DELIVERY
                                 </a>
-                                <form action="{{ route('transactions.destroy',$item->id) }}" method="POST" class="inline-block">
-                                    {!! method_field('delete') .csrf_field() !!}
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mx-2 rounded">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="border text-center p-5">
-                                    Data Tidak Ditemukan
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center mt-5">
-                {{ $transactions->links() }}
-            </div>
+                                <a href="{{ route('transactions.changeStatus'. ['id' => $item->id, 'status' => 'DELIVERED']) }}"
+                                    class="b-green-500 hover:bg-blue-700 text-white font-bold px-2 rounded block text-center w-full mb-1">
+                                    DELIVERED
+                                </a>
+                                <a href="{{ route('transactions.changeStatus'. ['id' => $item->id, 'status' => 'CANCELLED']) }}"
+                                    class="b-blue-500 hover:bg-blue-700 text-white font-bold px-2 rounded block text-center w-full mb-1">
+                                    CANCELLED
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+           </div>
         </div>
     </div>
 </x-app-layout>
