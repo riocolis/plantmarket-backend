@@ -23,7 +23,7 @@ class PlantSeeder extends Seeder
                 'description' => $faker->sentence(20,true),
                 'price' => $faker->randomNumber(6),
                 'rate' => $faker->randomFloat(NULL,0,5),
-                'types' => 'new_plant',
+                'types' => 'recommended',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
