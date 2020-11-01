@@ -12,7 +12,7 @@ class PlantController extends Controller
     public function all(Request $request)
     {
         $id = $request->input('id');
-        $limit = $request->input('limit', 10);
+        $limit = $request->input('limit', 6);
         $name = $request->input('name');
         $types = $request->input('types');
 
@@ -44,7 +44,7 @@ class PlantController extends Controller
             }
 
             if ($types) {
-                $plant->where('name', 'like', '%' . $types . '%');
+                $plant->where('types', 'like', '%' . $types . '%');
             }
 
             if ($price_form) {
