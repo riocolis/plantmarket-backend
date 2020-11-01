@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 ///HomePage
 Route::get('/', function () {
-    return route('dashboard');
+    return redirect()->route('dashboard');
 });
 
 ///Dashboard
