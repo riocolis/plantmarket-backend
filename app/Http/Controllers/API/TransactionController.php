@@ -35,21 +35,21 @@ class TransactionController extends Controller
                     404
                 );
             }
-            $transaction = Transaction::with(['plant', 'user'])->where('user_id', Auth::user()->id);
-
-            if ($plant_id) {
-                $transaction->where('plant_id', $plant_id);
-            }
-
-            if ($status) {
-                $transaction->where('status', $status);
-            }
-
-            return ResponseFormatter::success(
-                $transaction->paginate($limit),
-                'Data List transaction berhasil diambil'
-            );
         }
+        $transaction = Transaction::with(['plant', 'user'])->where('user_id', Auth::user()->id);
+
+        if ($plant_id) {
+            $transaction->where('plant_id', $plant_id);
+        }
+
+        if ($status) {
+            $transaction->where('status', $status);
+        }
+
+        return ResponseFormatter::success(
+            $transaction->paginate($limit),
+            'Data List transaction berhasil diambil'
+        );
     }
 
     public function update(Request $request, $id)
@@ -63,7 +63,7 @@ class TransactionController extends Controller
             'Transaksi berhasil diperbaharui'
         );
     }
-    
+
     public function checkout(Request $request)
     {
         $request->validate([
@@ -89,19 +89,19 @@ class TransactionController extends Controller
         Config::$is3ds = config('services.midtrans.is3ds');
 
         ///Call Transaction
-        $transaction = Transaction::with(['plant','user'])->find($transaction->id);
+        $transaction = Transaction::with(['plant', 'user'])->find($transaction->id);
 
         ///Make Transaksi midTrans
-        $midtrans =[
+        $midtrans = [
             'transaction_details' => [
                 'order_id' => $transaction->id,
-                'gross_amount'=> (int) $transaction->total,
+                'gross_amount' => (int) $transaction->total,
             ],
             'customer_details' => [
                 'first_name' => $transaction->user->name,
                 'email' => $transaction->user->email,
             ],
-            'enabled_payments' => ['gopay','bank_transafer'],
+            'enabled_payments' => ['gopay', 'bank_transafer'],
             'vtweb' => []
         ];
 
@@ -111,10 +111,9 @@ class TransactionController extends Controller
             $transaction->payment_url = $paymentUrl;
             $transaction->save();
 
-            return ResponseFormatter::success($transaction,'transaksi berhasil');
-
+            return ResponseFormatter::success($transaction, 'transaksi berhasil');
         } catch (Exception $e) {
-            return ResponseFormatter::error($e->getMessage(),'Transaksi Gagal');
+            return ResponseFormatter::error($e->getMessage(), 'Transaksi Gagal');
         }
     }
 }
