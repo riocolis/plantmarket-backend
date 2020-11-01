@@ -73,7 +73,7 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return ResponseFormatter::error(['message' => 'Could not create user', 'error' => $validator->errors()], 'Cannot Login');
+                return ResponseFormatter::error(['message' => 'Could not create user', 'error' => $validator->errors()], 'Cannot Create User');
             }
 
             User::create([
