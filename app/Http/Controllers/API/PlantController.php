@@ -37,7 +37,8 @@ class PlantController extends Controller
                     404
                 );
             }
-            $plant = Plant::query();
+        }
+        $plant = Plant::query();
 
             if ($name) {
                 $plant->where('name', 'like', '%' . $name . '%');
@@ -67,6 +68,5 @@ class PlantController extends Controller
                 $plant->paginate($limit),
                 'Data List produk berhasil diambil'
             );
-        }
     }
 }
