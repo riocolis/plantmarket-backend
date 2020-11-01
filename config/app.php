@@ -52,8 +52,8 @@ return [
     |
     */
 
-    'url' => 'http://whispering-dawn-05166.herokuapp.com/',
-
+    'url' => env('APP_URL', 'http://locahost'),
+   
     'asset_url' => env('ASSET_URL', null),
 
     /*
