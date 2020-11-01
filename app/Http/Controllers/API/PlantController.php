@@ -16,10 +16,10 @@ class PlantController extends Controller
         $name = $request->input('name');
         $types = $request->input('types');
 
-        $price_form = $request->input('price_from');
+        $price_from = $request->input('price_from');
         $price_to = $request->input('price_to');
 
-        $rate_form = $request->input('rate_from');
+        $rate_from = $request->input('rate_from');
         $rate_to = $request->input('rate_to');
 
         if ($id) {
@@ -47,16 +47,16 @@ class PlantController extends Controller
                 $plant->where('types', 'like', '%' . $types . '%');
             }
 
-            if ($price_form) {
-                $plant->where('price', '>=', $price_form);
+            if ($price_from) {
+                $plant->where('price', '>=', $price_from);
             }
 
             if ($price_to) {
                 $plant->where('price', '<=', $price_to);
             }
 
-            if ($rate_form) {
-                $plant->where('rate', '>=', $rate_form);
+            if ($rate_from) {
+                $plant->where('rate', '>=', $rate_from);
             }
 
             if ($rate_to) {
