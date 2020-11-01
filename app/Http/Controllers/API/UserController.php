@@ -20,16 +20,25 @@ class UserController extends Controller
     {
         try {
             // Input Validation
-            $request->validate([
+            // $request->validate([
+            //     'email' => 'email|required',
+            //     'password' => 'required'
+            // ]);
+
+            $validator = Validator::make($request->all(), [
                 'email' => 'email|required',
                 'password' => 'required'
             ]);
+
+            if ($validator->fails()) {
+                return ResponseFormatter::error(['message' => 'Could not login user', 'error' => $validator->errors()], 'Cannot Login');
+            }
 
             //Checking Credential (login)
             $credentials = request(['email', 'password']);
             if (!Auth::attempt($credentials)) {
                 return ResponseFormatter::error([
-                    'message' => 'Unauthorized',
+                    'message' => 'Unauthorized'
                 ], 'Authentication Failed', 500);
             }
 
@@ -49,7 +58,7 @@ class UserController extends Controller
         } catch (Exception $error) {
             return ResponseFormatter::error([
                 'message' => 'Something went wrong',
-                'error' => $error
+                'error' => $error,
             ], 'Authentication Failed', 500);
         }
     }
